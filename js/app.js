@@ -21,9 +21,10 @@ hideTabContent()
 showTabContent()
 
 // Авто-слайдер
+let timeout
+let interval
 let autoSlide = (i = 0) => {
-    let timeout
-    let interval = setInterval(() => {
+    interval = setInterval(() => {
         i++
         if (i > tabContent.length - 1) {
             i = 0
@@ -31,7 +32,12 @@ let autoSlide = (i = 0) => {
         hideTabContent()
         showTabContent(i)
     }, 3000)
-    // По клику на таб делаем паузу и возобновляем авто-слайдер через 6 секунд
+
+}
+autoSlide()
+
+// По клику на таб делаем паузу и возобновляем авто-слайдер через 6 секунд
+const pauseAndStart = () => {
     tabs.forEach((item, i) => {
         item.onclick = () => {
             clearInterval(interval)
@@ -42,19 +48,22 @@ let autoSlide = (i = 0) => {
         }
     })
 }
-autoSlide()
+pauseAndStart()
 
 // Показываем таб по клику
-tabsParent.onclick = (event) => {
-    if (event.target.classList.contains('tabheader__item')) {
-        tabs.forEach((item, i) => {
-            if (event.target === item) {
-                hideTabContent()
-                showTabContent(i)
-            }
-        })
+const showMeTab = () => {
+    tabsParent.onclick = (event) => {
+        if (event.target.classList.contains('tabheader__item')) {
+            tabs.forEach((item, i) => {
+                if (event.target === item) {
+                    hideTabContent()
+                    showTabContent(i)
+                }
+            })
+        }
     }
 }
+showMeTab()
 
 // modal 
 const modal = document.querySelector('.modal')
@@ -71,7 +80,7 @@ const closeModal = () => {
     document.body.style.overflow = ''
 }
 
-// Авто открытие модального окна
+// Авто-открытие модального окна
 const autoOpenModal = () => {
     setTimeout(openModal, 10000)
 }
